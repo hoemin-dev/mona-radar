@@ -1,0 +1,73 @@
+// Vendored from mona-radar-market; see provenance.json.
+import { recordTargetMembership } from "../storage/collection-target.js";
+import { CONTRACT_OPERATION, CONTRACT_SERVICE, normalizeContract } from "./contract.js";
+import { upsertContractItem } from "./contract-source-derived.js";
+function normalizeEvidenceBackedContractResults(db, rawId, headerId, collectionTargetCodes, at, runId = null) {
+  const targets = new Set(collectionTargetCodes);
+  if ([...targets].some((target) => !/^(?:\d{8}|\d{10})$/.test(target))) throw new Error("INVALID_CONTRACT_TARGET");
+  const evidence = contractMembershipEvidence(db, headerId);
+  const results = [];
+  for (const parent of new Set(evidence.map((e) => e.parent).filter((p) => !!p && /^\d{8}$/.test(p)))) {
+    const relevant = [...targets].filter((t) => t.slice(0, 8) === parent);
+    if (!relevant.length) continue;
+    const result = normalizeContractRawItem(db, rawId, parent, at);
+    for (const target of relevant) if (target.length === 8 || evidence.some((e) => e.parent === parent && e.detail === target)) recordTargetMembership(db, "CONTRACT", result.contractResultId, target, runId);
+    results.push({ target: parent, ...result });
+  }
+  return results;
+}
+function normalizeContractRawItem(db, rawId, target, at) {
+  if (!/^\d{8}$/.test(target)) throw new Error("INVALID_CONTRACT_TARGET");
+  const row = db.prepare("SELECT service,operation,canonical_json FROM api_raw_item WHERE raw_item_id=?").get(rawId);
+  if (!row || row.service !== CONTRACT_SERVICE || row.operation !== CONTRACT_OPERATION) throw new Error("RAW item is not from the supported contract operation");
+  const n = normalizeContract(JSON.parse(row.canonical_json)), c = n.candidate, warnings = JSON.stringify(n.warnings);
+  const columns = ["contract_no", "contract_name", "contract_method_name", "contract_institution_name", "demand_institution_name", "contract_amount", "contract_date", "contract_detail_url", "contract_ref_no", "unified_contract_no", "registered_at", "business_division_name", "total_contract_amount", "contract_period", "contract_info_url", "base_law_name", "base_details", "payment_division_name", "long_term_continuation_division_name", "common_contract_yn", "guarantee_money_rate", "delay_compensation_rate", "contract_institution_code", "contract_institution_division_name", "contract_department_name", "contract_officer_name", "contract_officer_tel_no", "contract_officer_fax_no", "creditor_name", "information_business_yn", "request_no", "notice_no"];
+  const values = [c.contractNo, c.contractName, c.contractMethodName, c.contractInstitutionName, c.demandInstitutionName, c.contractAmount, c.contractDate, c.contractDetailUrl, c.contractRefNo, c.unifiedContractNo, c.registeredAt, c.businessDivisionName, c.totalContractAmount, c.contractPeriod, c.contractInfoUrl, c.baseLawName, c.baseDetails, c.paymentDivisionName, c.longTermContinuationDivisionName, c.commonContractYn, c.guaranteeMoneyRate, c.delayCompensationRate, c.contractInstitutionCode, c.contractInstitutionDivisionName, c.contractDepartmentName, c.contractOfficerName, c.contractOfficerTelNo, c.contractOfficerFaxNo, c.creditorName, c.informationBusinessYn, c.requestNo, c.noticeNo];
+  db.exec("BEGIN IMMEDIATE");
+  try {
+    const old = db.prepare("SELECT contract_result_id,semantic_row_hash FROM contract_result WHERE decision_contract_no=?").get(c.decisionContractNo);
+    let contractResultId, action;
+    if (!old) {
+      const names = ["target_detailed_product_class_no", "decision_contract_no", ...columns, "source_raw_item_id", "source_operation", "semantic_row_hash", "semantic_state_json", "parse_warnings_json", "first_normalized_at", "last_normalized_at"];
+      const result = db.prepare(`INSERT INTO contract_result(${names.join(",")}) VALUES(${names.map(() => "?").join(",")})`).run(target, c.decisionContractNo, ...values, rawId, CONTRACT_OPERATION, n.semanticRowHash, n.semanticStateJson, warnings, at, at);
+      contractResultId = Number(result.lastInsertRowid);
+      action = "inserted";
+    } else {
+      contractResultId = old.contract_result_id;
+      action = old.semantic_row_hash === n.semanticRowHash ? "unchanged" : "updated";
+      db.prepare(`UPDATE contract_result SET target_detailed_product_class_no=?,${columns.map((x) => `${x}=?`).join(",")},source_raw_item_id=?,semantic_row_hash=?,semantic_state_json=?,parse_warnings_json=?,last_normalized_at=? WHERE contract_result_id=?`).run(target, ...values, rawId, n.semanticRowHash, n.semanticStateJson, warnings, at, contractResultId);
+    }
+    db.prepare("DELETE FROM contract_corporation WHERE contract_result_id=?").run(contractResultId);
+    const corp = db.prepare("INSERT INTO contract_corporation(contract_result_id,sequence_no,role_name,participation_type_name,corporation_name,representative_name,country_name,share_rate,display_name,extra_value,business_registration_no,source_value)VALUES(?,?,?,?,?,?,?,?,?,?,?,?)");
+    for (const x of n.corporations) corp.run(contractResultId, x.sequenceNo, x.roleName, x.participationTypeName, x.corporationName, x.representativeName, x.countryName, x.shareRate, x.displayName, x.extraValue, x.businessRegistrationNo, x.sourceValue);
+    db.prepare("DELETE FROM contract_demand_institution WHERE contract_result_id=?").run(contractResultId);
+    const demand = db.prepare("INSERT INTO contract_demand_institution(contract_result_id,sequence_no,institution_code,institution_name,institution_division_name,extra_value_1,extra_value_2,extra_value_3,source_value)VALUES(?,?,?,?,?,?,?,?,?)");
+    for (const x of n.demandInstitutions) demand.run(contractResultId, x.sequenceNo, x.institutionCode, x.institutionName, x.institutionDivisionName, x.extraValue1, x.extraValue2, x.extraValue3, x.sourceValue);
+    db.exec("COMMIT");
+    return { action, contractResultId };
+  } catch (error) {
+    db.exec("ROLLBACK");
+    throw error;
+  }
+}
+function renormalizeStoredContractDetails(db, at, targets = []) {
+  const items = db.prepare("SELECT contract_header_id headerId,source_raw_item_id rawId FROM contract_item ORDER BY contract_item_id").all();
+  for (const item of items) upsertContractItem(db, item.headerId, item.rawId, targets, at);
+  const headers = db.prepare("SELECT contract_header_id headerId,source_raw_item_id rawId FROM contract_header ORDER BY contract_header_id").all();
+  let results = 0;
+  for (const header of headers) results += normalizeEvidenceBackedContractResults(db, header.rawId, header.headerId, targets, at).length;
+  return { items: items.length, results };
+}
+function contractMembershipEvidence(db, headerId) {
+  return db.prepare(`SELECT DISTINCT i.product_class_no parent,
+   COALESCE(NULLIF(json_extract(i.raw_json,'$.dtilPrdctClsfcNo'),''),CASE WHEN c.lookup_status='FOUND' THEN c.detailed_product_class_no END,cat.detailed_product_class_no) detail
+   FROM contract_item i LEFT JOIN contract_catalog_cache c ON c.product_identification_no=i.product_identification_no
+   LEFT JOIN catalog_item_category cat ON cat.prdct_idnt_no=i.product_identification_no
+   WHERE i.contract_header_id=?`).all(headerId);
+}
+export {
+  contractMembershipEvidence,
+  normalizeContractRawItem,
+  normalizeEvidenceBackedContractResults,
+  renormalizeStoredContractDetails
+};

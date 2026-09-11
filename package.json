@@ -4,9 +4,16 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "dev": "node scripts/dev.mjs",
+    "dev:web": "vite",
+    "dev:api": "python -m server.app",
+    "db:import": "python scripts/import_sqlite.py",
+    "icons": "python scripts/generate_icons.py",
+    "test:domains": "python -X utf8 -m unittest discover -s tests -p test_domains.py -v",
+    "test:input": "node --test tests/search-input.test.mjs",
+    "test:scan": "python -X utf8 -m unittest tests.test_live_scan -v && node --test tests/live-collector.test.mjs",
     "build": "npm run typecheck && vite build",
-    "preview": "vite preview",
+    "preview": "node scripts/dev.mjs --preview",
     "typecheck": "tsc --noEmit"
   },
   "devDependencies": {

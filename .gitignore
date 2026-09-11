@@ -8,6 +8,8 @@ dist/
 
 # Local data
 /db_local/
+__pycache__/
+*.pyc
 
 # Environment files (keep documented examples)
 .env

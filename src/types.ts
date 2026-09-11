@@ -1,8 +1,12 @@
-export type Domain = "company" | "facility";
+export type Domain = "live" | "market" | "forecast" | "company" | "facility" | "certification";
 export type View = "search" | "dash" | "analysis";
 export type SortOption = "name-asc" | "revenue-desc" | "recent-desc";
 
 export interface Company {
+  favoriteColor?: string;
+  classification?: string;
+  memo?: string;
+  isOurCompany?: boolean;
   companyId: string;
   sminfoKcd: string;
   businessNumber?: string;
@@ -38,5 +42,5 @@ export interface CompanyDetail {
   patents: DetailRow[];
 }
 export interface IndustryOption { id: string; name: string; }
-export interface CompanySearchParams { query: string; industry: string; sort: SortOption; page: number; pageSize: number; }
+export interface CompanySearchParams { query: string; industry: string; sort: SortOption; page: number; pageSize: number; target?: string; favorite?: string; classified?: string; signal?: AbortSignal; }
 export interface CompanySearchResult { rows: Company[]; total: number; page: number; totalPages: number; }

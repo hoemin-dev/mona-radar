@@ -1,0 +1,47 @@
+[
+  {
+    "file": "category_projection.sql",
+    "source": "D:\\work\\mona-radar-facility\\src-tauri\\src\\sql\\category_projection.sql",
+    "sourceSha256": "d83546a9f5ed1b2988ca4d7687114ed03662f377fc38ae8190110023a3840d72"
+  },
+  {
+    "file": "category_search.sql",
+    "source": "D:\\work\\mona-radar-facility\\src-tauri\\src\\sql\\category_search.sql",
+    "sourceSha256": "7eb28b39ca84adcbc0ef8a5240e390ced91c2d2d41c1bc534757869f3f657db5"
+  },
+  {
+    "file": "facility_where.sql",
+    "source": "D:\\work\\mona-radar-facility\\src-tauri\\src\\lib.rs",
+    "sourceSha256": "764dc57b2a749fa3ef3813d7d6bf2739943647c5176762e92896e029805cc210"
+  },
+  {
+    "file": "certification_effective.sql",
+    "source": "D:\\work\\mona-radar-certification\\src-tauri\\src\\lib.rs",
+    "sourceSha256": "75a7f8af10014694205e0e584129c2fab447242712a99fbebb3306f90dd71519"
+  },
+  {
+    "file": "market_classifications.sql",
+    "source": "D:\\work\\mona-radar-market\\src-tauri\\src\\search_classifications.sql",
+    "sourceSha256": "f56836f7e1021c626a36cc872e210851a671cac080ac3b2b509614e1dbc21ef8"
+  },
+  {
+    "file": "market_integrated.sql",
+    "source": "D:\\work\\mona-radar-market\\src-tauri\\src\\lib.rs",
+    "sourceSha256": "c830fb748d31e3e17048a79b3e8069cbfedffaeed0b05d03fba2de4cb3ed9c78"
+  },
+  {
+    "file": "market_bid.sql",
+    "source": "D:\\work\\mona-radar-market\\src-tauri\\src\\lib.rs",
+    "sourceSha256": "c830fb748d31e3e17048a79b3e8069cbfedffaeed0b05d03fba2de4cb3ed9c78"
+  },
+  {
+    "file": "market_contract.sql",
+    "source": "D:\\work\\mona-radar-market\\src-tauri\\src\\lib.rs",
+    "sourceSha256": "c830fb748d31e3e17048a79b3e8069cbfedffaeed0b05d03fba2de4cb3ed9c78"
+  },
+  {
+    "file": "market_award.sql",
+    "source": "D:\\work\\mona-radar-market\\src-tauri\\src\\lib.rs",
+    "sourceSha256": "c830fb748d31e3e17048a79b3e8069cbfedffaeed0b05d03fba2de4cb3ed9c78"
+  }
+]

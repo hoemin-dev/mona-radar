@@ -1,0 +1,141 @@
+{
+  "project": "mona-radar-market",
+  "conversion": "esbuild TypeScript erasure, ESM, node22",
+  "files": [
+    {
+      "source": "koneps/client.ts",
+      "output": "koneps/client.js",
+      "sha256": "3055b3532e96f38f8ed0c44ad7845c6be6de48c5d2d51419e02e9de390274c26"
+    },
+    {
+      "source": "koneps/collection-target.ts",
+      "output": "koneps/collection-target.js",
+      "sha256": "48494b69d22244bcd8a0898b12997d0b59b40eb04eb2bb81d2b00c41cd48d7c9"
+    },
+    {
+      "source": "koneps/config.ts",
+      "output": "koneps/config.js",
+      "sha256": "b7895a453c1c313e2c093587f0c88aca17eb0ea81eb8d4976e0f76678d8a28ee"
+    },
+    {
+      "source": "koneps/endpoints.ts",
+      "output": "koneps/endpoints.js",
+      "sha256": "59e8319979fd5c64c5572902aa08714e8f9ade2b4dcb72cf1f427c8ae9939864"
+    },
+    {
+      "source": "koneps/envelope.ts",
+      "output": "koneps/envelope.js",
+      "sha256": "7653ef96a8a14e5a219bd63605df057e3eb16183739288248c62595d94160031"
+    },
+    {
+      "source": "koneps/environment.ts",
+      "output": "koneps/environment.js",
+      "sha256": "c6bacf1109abc0c6a88ca43d0db8e6254075b512c3f8faf400a462e91cac0129"
+    },
+    {
+      "source": "koneps/errors.ts",
+      "output": "koneps/errors.js",
+      "sha256": "61ed5221e1b6d349252c795466d3c29a3ad96bf5ca142ccbc272ede96f927cac"
+    },
+    {
+      "source": "koneps/live-shape.ts",
+      "output": "koneps/live-shape.js",
+      "sha256": "2f48e6f78900456fc73f268f692ad4510bef9aa7538d8da32b6216d8f327d0d2"
+    },
+    {
+      "source": "koneps/redaction.ts",
+      "output": "koneps/redaction.js",
+      "sha256": "d21d9c3114c63a9609edeaa4db1a062a1635695cef1739b0b3f9e0bee4296d21"
+    },
+    {
+      "source": "koneps/target-query.ts",
+      "output": "koneps/target-query.js",
+      "sha256": "91226346758223f8fe476bfb4b6e534d10be806461282105ae4042d363fedeb1"
+    },
+    {
+      "source": "koneps/target-registry.ts",
+      "output": "koneps/target-registry.js",
+      "sha256": "45705ea47da1185aed949e44418c3d9ea0e24e95a66bbfe78755397cc916b9b4"
+    },
+    {
+      "source": "koneps/target-search.ts",
+      "output": "koneps/target-search.js",
+      "sha256": "04ea504ccab50ce3dba3c8e40cbe1905b2d4df5b802496c7f3c3e8d9cf4c70cb"
+    },
+    {
+      "source": "normalization/award-repository.ts",
+      "output": "normalization/award-repository.js",
+      "sha256": "9e8b0ca573f9c9f7fa48d2caf585f3d68e799ef591e0e15526066d025533a2b5"
+    },
+    {
+      "source": "normalization/award.ts",
+      "output": "normalization/award.js",
+      "sha256": "95d49b7055cb68d443db8911cb463b60339b4d554a6fe99d5977af0c1879dc03"
+    },
+    {
+      "source": "normalization/bid-notice-repository.ts",
+      "output": "normalization/bid-notice-repository.js",
+      "sha256": "26cd4055d8ca100a14406c4eed84c564eccc8a0614799875719748d40a28eee6"
+    },
+    {
+      "source": "normalization/bid-notice.ts",
+      "output": "normalization/bid-notice.js",
+      "sha256": "ed56531bec0de74264489b15e3ace625debc80f03b896290ff203909bd5345ec"
+    },
+    {
+      "source": "normalization/contract-repository.ts",
+      "output": "normalization/contract-repository.js",
+      "sha256": "b62a57c52a61a02af0e594bb06517c652bb04d3b94c7c4e4b48f54c738294676"
+    },
+    {
+      "source": "normalization/contract-source-derived.ts",
+      "output": "normalization/contract-source-derived.js",
+      "sha256": "3c524433af956b842d51e203199bcadcd3902c567b7f37f159e70d250907cc5a"
+    },
+    {
+      "source": "normalization/contract.ts",
+      "output": "normalization/contract.js",
+      "sha256": "15ba904aea690708870672a46b1ceb832658501977bb03b5e4afeb3d2a18787c"
+    },
+    {
+      "source": "orchestration/award-collector.ts",
+      "output": "orchestration/award-collector.js",
+      "sha256": "17ff6fc761a136bf25c26dddb5522e22889a04434aed7e2f24aa3d231c8948dc"
+    },
+    {
+      "source": "orchestration/contract-collector.ts",
+      "output": "orchestration/contract-collector.js",
+      "sha256": "eb2acc8d4e520b80003f793c907a1ffe4b4b28db766e188fd1c673e1a8047dec"
+    },
+    {
+      "source": "orchestration/contract-discovery-cache.ts",
+      "output": "orchestration/contract-discovery-cache.js",
+      "sha256": "c090fa920d5904c3521b3482cc5cfcce2167f06c146697b2cacc8f8b2a5a4f79"
+    },
+    {
+      "source": "orchestration/contract-discovery-ranges.ts",
+      "output": "orchestration/contract-discovery-ranges.js",
+      "sha256": "64acde5912583fe707db9529da69e191c118a687c431d7b92a6336df44fca7fc"
+    },
+    {
+      "source": "orchestration/contract-quota.ts",
+      "output": "orchestration/contract-quota.js",
+      "sha256": "fc3bb8fd64dcb9ef286308643c3899139884b6d556eb6a6b10df500285371460"
+    },
+    {
+      "source": "orchestration/pagination.ts",
+      "output": "orchestration/pagination.js",
+      "sha256": "b0c5e38e06cb1af74bbc8525a0699a1878d3f39cab83cf9c5619833930c083ac"
+    },
+    {
+      "source": "storage/collection-target.ts",
+      "output": "storage/collection-target.js",
+      "sha256": "b28cd124c256fc592988612830feab3b6faf9bcf69dc0681aa23bf0b1bb6449a"
+    },
+    {
+      "source": "storage/raw-persistence.ts",
+      "output": "storage/raw-persistence.js",
+      "sha256": "ef4effe88d202d902a0f3c40ead5ac4151a97f8b8baf33b8fc0ab4071d40f390"
+    }
+  ]
+}

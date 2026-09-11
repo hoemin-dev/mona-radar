@@ -1,0 +1,6 @@
+.market-detail .fact-grid dd { white-space: pre-wrap; overflow-wrap: anywhere; min-width: 0; }
+.market-detail .market-item { padding: 16px 0; border-top: 1px solid var(--border, #294339); }
+.market-detail .market-item:first-child { border-top: 0; }
+.market-detail th, .market-detail td { white-space: normal; min-width: 90px; overflow-wrap: anywhere; }
+.market-detail .page-head h1 { overflow-wrap: anywhere; }
+@media (max-width: 700px) { .market-detail .fact-grid { grid-template-columns: 1fr; } .market-detail .fact-grid dt { margin-top: 8px; } }
